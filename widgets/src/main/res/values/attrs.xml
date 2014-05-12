@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+* Copyright (C) 2014 [Jag Saund]
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+-->
+
+<resources>
+    <declare-styleable name="RadialProgressIndicator">
+        <!-- Defines the maximum value the indicator can take. -->
+        <attr name="max" format="integer" />
+        <!-- Defines the timeout value to use if the indicator style is timeout. The value provided
+             should be in milliseconds. -->
+        <attr name="timeout" format="integer" />
+        <!-- Defines the default progress value, between 0 and max if the indicator style is
+             percentage or between timeout and 0 if the indicator style is timer. -->
+        <attr name="progress" format="integer" />
+        <!-- Defines the secondary progress value, between 0 and max. -->
+        <attr name="secondaryProgress" format="integer" />
+        <!-- Defines the track color of the radial indicator. -->
+        <attr name="trackColor" format="reference|color" />
+        <!-- Defines the secondary track color of the radial indicator. -->
+        <attr name="secondaryTrackColor" format="reference|color" />
+        <!-- Defines the color of the indicator to be drawn as the arc is swept between 0 and
+             360 degrees. -->
+        <attr name="indicatorColor" format="reference|color" />
+        <!-- Defines the color of the secondary indicator to be drawn as the arc is swept between 0
+             and 360 degrees. -->
+        <attr name="secondaryIndicatorColor" format="reference|color" />
+        <!-- Defines the thickness of the track and indicator to be drawn. -->
+        <attr name="thickness" format="dimension" />
+        <!-- Defines the secondary progress thickness of the track and indicator to be drawn. -->
+        <attr name="secondaryThickness" format="dimension" />
+        <!-- Defines the type of indicator to draw. -->
+        <attr name="indicatorStyle" format="integer">
+            <!-- The indicator will display a percentage between 0 and 100%. -->
+            <enum name="timer" value="0" />
+            <!-- The indicator will countdown from the max value to 0. -->
+            <enum name="percentage" value="1" />
+            <!-- The indicator will update it's indicator arc only when the progress is changed. -->
+            <enum name="fixed" value="2" />
+        </attr>
+        <!-- The text size to be used for the indicator value. -->
+        <attr name="textSize" format="dimension" />
+        <!-- The text color of the indicator value -->
+        <attr name="textColor" format="reference|color" />
+        <!-- The drawable to display upon failing a pre-defined condition -->
+        <attr name="failureDrawable" format="reference" />
+        <!-- The drawable to display upon successfully fulfilling a pre-defined condition -->
+        <attr name="successDrawable" format="reference" />
+        <!-- Use smooth animation for incremental progress updates -->
+        <attr name="smoothAnimation" format="boolean" />
+    </declare-styleable>
+</resources>
