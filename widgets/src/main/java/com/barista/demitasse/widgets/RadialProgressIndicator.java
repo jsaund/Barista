@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -41,15 +42,15 @@ import java.util.Locale;
  * progress is displayed as a radial arc from [0 .. 360].<br/>
  * The component operates in 3 modes:
  * <ol>
- *     <li>Timer: The application can provide a timeout duration in seconds. The radial indicator
- *     will countdown from the duration to 0. A callback is triggered upon reaching 0.</li>
- *     <li>Percentage: The application can update the amount of progress and the indicator will
- *     advance the position radially along the track of the indicator. The overall progress is
- *     displayed as a percentage from [0 .. 100] in the center of the radial indicator.</li>
- *     <li>Fixed: Operates similar to Percentage with the exception that the progress value is
- *     rendered as the current value. For example: if the max progress is set to 3000 and the
- *     current progress is 500 then 500 will be displayed in the center (as opposed to the
- *     percentage).</li>
+ * <li>Timer: The application can provide a timeout duration in seconds. The radial indicator
+ * will countdown from the duration to 0. A callback is triggered upon reaching 0.</li>
+ * <li>Percentage: The application can update the amount of progress and the indicator will
+ * advance the position radially along the track of the indicator. The overall progress is
+ * displayed as a percentage from [0 .. 100] in the center of the radial indicator.</li>
+ * <li>Fixed: Operates similar to Percentage with the exception that the progress value is
+ * rendered as the current value. For example: if the max progress is set to 3000 and the
+ * current progress is 500 then 500 will be displayed in the center (as opposed to the
+ * percentage).</li>
  * </ol>
  * </p>
  */
@@ -397,7 +398,6 @@ public class RadialProgressIndicator extends View {
      *
      * @return True if the current indicator style is {@link #INDICATOR_STYLE_PERCENTAGE} and False
      * otherwise.
-     *
      * @see #setIndicatorStylePercentage()
      * @see #setIndicatorStyle(int)
      */
@@ -425,7 +425,6 @@ public class RadialProgressIndicator extends View {
      *
      * @return True if the current indicator style is {@link #INDICATOR_STYLE_TIMER} and False
      * otherwise.
-     *
      * @see #setIndicatorStyleTimer()
      * @see #setIndicatorStyle(int)
      */
@@ -455,7 +454,6 @@ public class RadialProgressIndicator extends View {
      *
      * @return True if the current indicator style is {@link #INDICATOR_STYLE_FIXED} and False
      * otherwise.
-     *
      * @see #setIndicatorStyleFixed()
      * @see #setIndicatorStyle(int)
      */
@@ -486,7 +484,6 @@ public class RadialProgressIndicator extends View {
      *
      * @param indicatorStyle Sets the indicator style to one of the provided styles. If the style
      *                       is not one of the supported styles then an {@link java.lang.IllegalArgumentException} is thrown.
-     *
      * @see #getIndicatorStyle()
      */
     public void setIndicatorStyle(int indicatorStyle) {
@@ -504,7 +501,6 @@ public class RadialProgressIndicator extends View {
      * {@link #INDICATOR_STYLE_TIMER}<br/>
      *
      * @return
-     *
      * @see #setIndicatorStyle(int)
      */
     public int getIndicatorStyle() {
@@ -547,7 +543,6 @@ public class RadialProgressIndicator extends View {
      * [0 .. maxProgress].
      *
      * @param maxProgress The upper limit of the primary indicator's track range.
-     *
      * @see #getMaxProgress()
      */
     public synchronized void setMaxProgress(int maxProgress) {
@@ -558,7 +553,6 @@ public class RadialProgressIndicator extends View {
      * Return the upper limit of the primary indicator's track range.
      *
      * @return The upper limit.
-     *
      * @see #setMaxProgress(int)
      */
     public synchronized int getMaxProgress() {
@@ -571,7 +565,6 @@ public class RadialProgressIndicator extends View {
      * The current progress is ensured to be between [0 .. {@link #getMaxProgress()}].
      *
      * @param progress The new progress (between [0 .. {@link #getMaxProgress()}]).
-     *
      * @see #getProgress()
      * @see #getMaxProgress()
      * @see #setMaxProgress(int)
@@ -602,7 +595,6 @@ public class RadialProgressIndicator extends View {
      * {@link #INDICATOR_STYLE_TIMER}.<br/>
      *
      * @return The current progress between 0 and {@link #getMaxProgress()}}.
-     *
      * @see #setProgress(int)
      * @see #getMaxProgress()
      * @see #setMaxProgress(int)
@@ -617,7 +609,6 @@ public class RadialProgressIndicator extends View {
      * The current secondary progress is ensured to be between [0 .. 100].
      *
      * @param progress The new progress (between [0 .. 100]).
-     *
      * @see #getSecondaryProgress()
      */
     public void setSecondaryProgress(int progress) {
@@ -642,7 +633,6 @@ public class RadialProgressIndicator extends View {
      * {@link #INDICATOR_STYLE_TIMER}.<br/>
      *
      * @return The current progress between 0 and {@link #getMaxProgress()}}.
-     *
      * @see #setProgress(int)
      * @see #getMaxProgress()
      * @see #setMaxProgress(int)
@@ -659,7 +649,6 @@ public class RadialProgressIndicator extends View {
      * will be triggered if a valid TimerListener has been registered.
      *
      * @param timeout The timeout value in milliseconds.
-     *
      * @see #getTimeout()
      * @see #startTimer()
      * @see #stopTimer()
@@ -673,7 +662,6 @@ public class RadialProgressIndicator extends View {
      * Returns the current timeout value in milliseconds.
      *
      * @return Current timeout value in milliseconds.
-     *
      * @see #setTimeout(int)
      * @see #startTimer()
      * @see #stopTimer()
@@ -820,16 +808,17 @@ public class RadialProgressIndicator extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        final int size = Math.min(w, h);
+        centerX = size / 2.0f;
+        centerY = size / 2.0f;
+
         final float left = getPaddingLeft() + thickness / 2.0f + secondaryThickness;
-        final float right = w - getPaddingRight() - thickness / 2.0f - secondaryThickness;
+        final float right = size - getPaddingRight() - thickness / 2.0f - secondaryThickness;
         final float top = getPaddingTop() + thickness / 2.0f + secondaryThickness;
-        final float bottom = h - getPaddingBottom() - thickness / 2.0f - secondaryThickness;
+        final float bottom = size - getPaddingBottom() - thickness / 2.0f - secondaryThickness;
 
         bounds = new RectF(left, top, right, bottom);
-        secondaryProgressBounds = new RectF(getPaddingLeft() + secondaryThickness / 2.0f, getPaddingTop() + secondaryThickness / 2.0f, w - getPaddingRight() - secondaryThickness / 2.0f, h - getPaddingBottom() - secondaryThickness / 2.0f);
-
-        centerX = w / 2.0f;
-        centerY = h / 2.0f;
+        secondaryProgressBounds = new RectF(getPaddingLeft() + secondaryThickness / 2.0f, getPaddingTop() + secondaryThickness / 2.0f, size - getPaddingRight() - secondaryThickness / 2.0f, size - getPaddingBottom() - secondaryThickness / 2.0f);
 
         if (successDrawable != null) {
             updateDrawableBounds(successDrawable);
