@@ -197,6 +197,11 @@ public class RadialProgressIndicator extends View {
     private int textSize;
 
     /**
+     * By default the progress text is always visible in the indicator.
+     */
+    private boolean showProgressText;
+
+    /**
      * Represents the stroke thickness of the primary progress track and indicator.
      */
     private int thickness;
@@ -343,6 +348,7 @@ public class RadialProgressIndicator extends View {
         final int defaultTextSize = resources.getDimensionPixelSize(R.dimen.radial_indicator_text_size);
         this.textSize = a.getDimensionPixelSize(R.styleable.RadialProgressIndicator_textSize, defaultTextSize);
         this.textColor = a.getColor(R.styleable.RadialProgressIndicator_textColor, Color.WHITE);
+        this.showProgressText = a.getBoolean(R.styleable.RadialProgressIndicator_showProgressText, true);
 
         this.indicatorStyle = a.getInteger(R.styleable.RadialProgressIndicator_indicatorStyle, DEFAULT_INDICATOR_STYLE);
         if (!isIndicatorStyleSupported(this.indicatorStyle)) {
@@ -796,6 +802,23 @@ public class RadialProgressIndicator extends View {
         this.secondaryProgressStarted = false;
     }
 
+    /**
+     * Displays the progress text in the center of the progress indicator.<br/>
+     * The progress text is either a percentage or fixed value of the progress.
+     */
+    public void showProgressText() {
+        this.showProgressText = true;
+        postInvalidate();
+    }
+
+    /**
+     * Hides the progress text in the center of the progress indicator.<br/>
+     */
+    public void hideProgressText() {
+        this.showProgressText = false;
+        postInvalidate();
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -842,7 +865,7 @@ public class RadialProgressIndicator extends View {
             drawSuccess(canvas);
         } else if (showFailure) {
             drawFailure(canvas);
-        } else {
+        } else if (showProgressText) {
             drawProgressText(canvas);
         }
 
