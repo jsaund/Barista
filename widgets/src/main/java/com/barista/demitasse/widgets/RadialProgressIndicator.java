@@ -91,6 +91,27 @@ public class RadialProgressIndicator extends View {
     public static final int INDICATOR_STYLE_FIXED = 2;
 
     /**
+     * The radial indicator has an optional secondary indicator. The secondary indicator can be
+     * painted in one of three locations. This location paints the secondary indicator on the inside
+     * track of the primary indicator.
+     */
+    public static final int SECONDARY_INDICATOR_STYLE_INSIDE = 0;
+
+    /**
+     * The radial indicator has an optional secondary indicator. The secondary indicator can be
+     * painted in one of three locations. This location paints the secondary indicator on the same
+     * track as the primary indicator.
+     */
+    public static final int SECONDARY_INDICATOR_STYLE_OVERLAY = 1;
+
+    /**
+     * The radial indicator has an optional secondary indicator. The secondary indicator can be
+     * painted in one of three locations. This location paints the secondary indicator on the outside
+     * track of the primary indicator.
+     */
+    public static final int SECONDARY_INDICATOR_STYLE_OUTSIDE = 2;
+
+    /**
      * If the radial indicator is considered as a circle positioned on a unit cartesian coordinate
      * system, then 0 degrees is considered as the point located at (0, 1). The arc is swept CW from
      * 0 degrees to 360 degrees.
@@ -98,6 +119,7 @@ public class RadialProgressIndicator extends View {
     private static final int ANGLE_START = -90;
 
     private static final int DEFAULT_INDICATOR_STYLE = INDICATOR_STYLE_TIMER;
+    private static final int DEFAULT_SECONDARY_INDICATOR_STYLE = SECONDARY_INDICATOR_STYLE_OUTSIDE;
     private static final int DEFAULT_MAX_PROGRESS = 100;
     private static final int DEFAULT_TIMEOUT = 30 * 1000;
 
@@ -108,6 +130,14 @@ public class RadialProgressIndicator extends View {
      * {@link #INDICATOR_STYLE_FIXED}<br/>
      */
     private int indicatorStyle = DEFAULT_INDICATOR_STYLE;
+
+    /**
+     * The secondary progress indicator style can be one of:<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_INSIDE}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OVERLAY}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE}
+     */
+    private int secondaryIndicatorStyle = DEFAULT_SECONDARY_INDICATOR_STYLE;
 
     /**
      * Indicates the current progress. This value ranges between [0 .. {@link #maxProgress}.
@@ -355,6 +385,11 @@ public class RadialProgressIndicator extends View {
             throw new IllegalArgumentException("An unsupported indicator style: " + this.indicatorStyle + " was provided.");
         }
 
+        this.secondaryIndicatorStyle = a.getInteger(R.styleable.RadialProgressIndicator_secondaryIndicatorStyle, DEFAULT_SECONDARY_INDICATOR_STYLE);
+        if (!isSecondaryIndicatorStyleSupported(this.secondaryIndicatorStyle)) {
+            throw new IllegalArgumentException("An unsupported secondary indicator style: " + this.secondaryIndicatorStyle + " was provided.");
+        }
+
         this.failureDrawable = a.getDrawable(R.styleable.RadialProgressIndicator_failureDrawable);
         if (failureDrawable != null) {
             updateDrawableBounds(failureDrawable);
@@ -511,6 +546,106 @@ public class RadialProgressIndicator extends View {
      */
     public int getIndicatorStyle() {
         return this.indicatorStyle;
+    }
+
+    /**
+     * Returns true if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_INSIDE}.
+     *
+     * @return True if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_INSIDE} and False otherwise.
+     * @see #setSecondaryIndicatorStyleInside()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public boolean isSecondaryIndicatorStyleInside() {
+        return this.secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_INSIDE;
+    }
+
+    /**
+     * Sets the secondary indicator style to paint the indicator on the inside.
+     *
+     * @see #isSecondaryIndicatorStyleInside()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public void setSecondaryIndicatorStyleInside() {
+        if (!isSecondaryIndicatorStyleInside()) {
+            this.secondaryIndicatorStyle = SECONDARY_INDICATOR_STYLE_INSIDE;
+        }
+    }
+
+    /**
+     * Returns true if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_OVERLAY}.
+     *
+     * @return True if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_OVERLAY} and False otherwise.
+     * @see #setSecondaryIndicatorStyleOverlay()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public boolean isSecondaryIndicatorStyleOverlay() {
+        return this.secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_OVERLAY;
+    }
+
+    /**
+     * Sets the secondary indicator style to paint the indicator on the same track as the primary
+     * indicator.
+     *
+     * @see #isSecondaryIndicatorStyleOverlay()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public void setSecondaryIndicatorStyleOverlay() {
+        if (!isSecondaryIndicatorStyleOverlay()) {
+            this.secondaryIndicatorStyle = SECONDARY_INDICATOR_STYLE_OVERLAY;
+        }
+    }
+
+    /**
+     * Returns true if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE}.
+     *
+     * @return True if the current secondary indicator style is {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE} and False otherwise.
+     * @see #setSecondaryIndicatorStyleOutside()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public boolean isSecondaryIndicatorStyleOutside() {
+        return this.secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_OUTSIDE;
+    }
+
+    /**
+     * Sets the secondary indicator style to paint the indicator on the outside track.
+     *
+     * @see #isSecondaryIndicatorStyleOutside()
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public void setSecondaryIndicatorStyleOutside() {
+        if (!isSecondaryIndicatorStyleOutside()) {
+            this.secondaryIndicatorStyle = SECONDARY_INDICATOR_STYLE_OUTSIDE;
+        }
+    }
+
+    /**
+     * Sets the secondary indicator style to one of the supported indicator styles:<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_INSIDE}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OVERLAY}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE}<br/>
+     *
+     * @param indicatorStyle Sets the secondary indicator style to one of the provided styles. If the style
+     *                       is not one of the supported styles then an {@link java.lang.IllegalArgumentException} is thrown.
+     * @see #getSecondaryIndicatorStyle()
+     */
+    public void setSecondaryIndicatorStyle(int indicatorStyle) {
+        if (this.secondaryIndicatorStyle != indicatorStyle) {
+            this.secondaryIndicatorStyle = indicatorStyle;
+        }
+    }
+
+    /**
+     * Retrieve the current secondary indicator style.
+     * Supported indicator styles:<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_INSIDE}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OVERLAY}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE}<br/>
+     *
+     * @return
+     * @see #setSecondaryIndicatorStyle(int)
+     */
+    public int getSecondaryIndicatorStyle() {
+        return this.secondaryIndicatorStyle;
     }
 
     /**
@@ -805,6 +940,8 @@ public class RadialProgressIndicator extends View {
     /**
      * Displays the progress text in the center of the progress indicator.<br/>
      * The progress text is either a percentage or fixed value of the progress.
+     *
+     * @see #hideProgressText()
      */
     public void showProgressText() {
         this.showProgressText = true;
@@ -813,6 +950,8 @@ public class RadialProgressIndicator extends View {
 
     /**
      * Hides the progress text in the center of the progress indicator.<br/>
+     *
+     * @see #showProgressText
      */
     public void hideProgressText() {
         this.showProgressText = false;
@@ -841,7 +980,14 @@ public class RadialProgressIndicator extends View {
         final float bottom = size - getPaddingBottom() - thickness / 2.0f - secondaryThickness;
 
         bounds = new RectF(left, top, right, bottom);
-        secondaryProgressBounds = new RectF(getPaddingLeft() + secondaryThickness / 2.0f, getPaddingTop() + secondaryThickness / 2.0f, size - getPaddingRight() - secondaryThickness / 2.0f, size - getPaddingBottom() - secondaryThickness / 2.0f);
+        if (secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_INSIDE) {
+            final float margin = thickness / 2.0f + secondaryThickness / 2.0f;
+            secondaryProgressBounds = new RectF(left + margin, top + margin, right - margin, bottom - margin);
+        } else if (secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_OVERLAY) {
+            secondaryProgressBounds = new RectF(left, top, right, bottom);
+        } else if (secondaryIndicatorStyle == SECONDARY_INDICATOR_STYLE_OUTSIDE) {
+            secondaryProgressBounds = new RectF(getPaddingLeft() + secondaryThickness / 2.0f, getPaddingTop() + secondaryThickness / 2.0f, size - getPaddingRight() - secondaryThickness / 2.0f, size - getPaddingBottom() - secondaryThickness / 2.0f);
+        }
 
         if (successDrawable != null) {
             updateDrawableBounds(successDrawable);
@@ -870,8 +1016,8 @@ public class RadialProgressIndicator extends View {
         }
 
         drawIndicatorTrack(canvas);
-        drawPrimaryIndicator(canvas);
         drawSecondaryIndicator(canvas);
+        drawPrimaryIndicator(canvas);
 
         canvas.restore();
     }
@@ -1034,5 +1180,19 @@ public class RadialProgressIndicator extends View {
      */
     private boolean isIndicatorStyleSupported(int indicatorStyle) {
         return (indicatorStyle == INDICATOR_STYLE_FIXED || indicatorStyle == INDICATOR_STYLE_PERCENTAGE || indicatorStyle == INDICATOR_STYLE_TIMER);
+    }
+
+    /**
+     * Validates the provided secondary indicator style to ensure it is one of the supported styles<br/>
+     * Valid indicator styles are:<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_INSIDE}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OUTSIDE}<br/>
+     * {@link #SECONDARY_INDICATOR_STYLE_OVERLAY}<br/>
+     *
+     * @param indicatorStyle
+     * @return Returns true if the style is supported and false otherwise.
+     */
+    private boolean isSecondaryIndicatorStyleSupported(int indicatorStyle) {
+        return (indicatorStyle == SECONDARY_INDICATOR_STYLE_INSIDE || indicatorStyle == SECONDARY_INDICATOR_STYLE_OUTSIDE || indicatorStyle == SECONDARY_INDICATOR_STYLE_OVERLAY);
     }
 }

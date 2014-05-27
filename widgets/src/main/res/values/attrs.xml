@@ -52,6 +52,15 @@
             <!-- The indicator will update it's indicator arc only when the progress is changed. -->
             <enum name="fixed" value="2" />
         </attr>
+        <!-- Defines the type of secondary indicator to draw. -->
+        <attr name="secondaryIndicatorStyle" format="integer">
+            <!-- The secondary indicator will be drawn on the inside of the primary indicator. -->
+            <enum name="inside" value="0" />
+            <!-- The secondary indicator will be drawn on the same track as the primary indicator.  -->
+            <enum name="overlay" value="1" />
+            <!-- The secondary indicator will be drawn on the outside of the primary indicator. -->
+            <enum name="outside" value="2" />
+        </attr>
         <!-- The text size to be used for the indicator value. -->
         <attr name="textSize" format="dimension" />
         <!-- The text color of the indicator value -->
