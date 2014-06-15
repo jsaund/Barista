@@ -122,6 +122,7 @@ public class RadialProgressIndicator extends View {
     private static final int DEFAULT_SECONDARY_INDICATOR_STYLE = SECONDARY_INDICATOR_STYLE_OUTSIDE;
     private static final int DEFAULT_MAX_PROGRESS = 100;
     private static final int DEFAULT_TIMEOUT = 30 * 1000;
+    private static final int DEFAULT_ANIMATION_TICK_DEGREES = 1;
 
     /**
      * The progress indicator style can be one of:<br/>
@@ -284,13 +285,21 @@ public class RadialProgressIndicator extends View {
     /**
      * Using smooth animation causes incremental progress updates to be animated from the current
      * angle to the target angle at a rate of 1 degree per frame where the frame rate is 60fps.
+     *
+     * The rate can be changed by setting {@link #animationTickDegrees}
      */
-    private boolean smoothAnimation = true;
+    private boolean smoothAnimation = false;
 
     /**
      * The handler used to execute the {@link #primaryIndicatorTick} and/or {@link #secondaryIndicatorTick}.
      */
     private final Handler animationHandler = new Handler();
+
+    /**
+     * Increasing the animationTickDegrees will make the maximum speed
+     * of the smoothAnimation faster
+     */
+    private int animationTickDegrees = DEFAULT_ANIMATION_TICK_DEGREES;
 
     /**
      * Each animation tick is dispatched to perform the operation as defined by this runnable.
@@ -307,7 +316,8 @@ public class RadialProgressIndicator extends View {
             if (isIndicatorStyleTimer() && sweepAngle < 360.0f) {
                 animationHandler.postDelayed(this, 20);
             } else if (currentSweepAngle < sweepAngle) {
-                currentSweepAngle += 1;
+                currentSweepAngle += animationTickDegrees;
+                currentSweepAngle = Math.min(currentSweepAngle, sweepAngle);
                 animationHandler.postDelayed(this, 20);
             }
         }
@@ -326,7 +336,8 @@ public class RadialProgressIndicator extends View {
             // If the target angle has not been reached then schedule this tick to be dispatched
             // at 60fps.
             if (currentSecondarySweepAngle < secondarySweepAngle) {
-                currentSecondarySweepAngle += 1;
+                currentSecondarySweepAngle += animationTickDegrees;
+                currentSecondarySweepAngle = Math.min(currentSecondarySweepAngle, secondarySweepAngle);
                 animationHandler.postDelayed(this, 20);
             }
         }
@@ -401,6 +412,7 @@ public class RadialProgressIndicator extends View {
         }
 
         this.smoothAnimation = a.getBoolean(R.styleable.RadialProgressIndicator_smoothAnimation, false);
+        this.animationTickDegrees = a.getInteger(R.styleable.RadialProgressIndicator_animationTickDegrees, DEFAULT_ANIMATION_TICK_DEGREES);
 
         a.recycle();
 
@@ -677,6 +689,22 @@ public class RadialProgressIndicator extends View {
     public void setTrackColor(int color) {
         this.trackColor = color;
         this.trackPaint.setColor(this.trackColor);
+    }
+
+    /**
+     * Set whether the radial indicator should smoothly animate or jump immediately to latest progress
+     * @param smoothAnimation
+     */
+    public void setSmoothAnimation(boolean smoothAnimation) {
+        this.smoothAnimation = smoothAnimation;
+    }
+
+    /**
+     * Set speed of smoothAnimation if enabled
+     * @param animationTickDegrees Number of degrees maximum to be animated per frame (at 60fps)
+     */
+    public void setAnimationTickDegrees(int animationTickDegrees) {
+        this.animationTickDegrees = animationTickDegrees;
     }
 
     /**
