@@ -2,3 +2,8 @@
 /local.properties
 /.idea/workspace.xml
 .DS_Store
+
+.idea/libraries/ComAndroidSupportAppcompatV71910_aar.xml
+.idea/libraries/Gradle__ComAndroidSupportAppcompatV71910_aar.xml
+.idea/libraries/Gradle__support_v4_19_1_0.xml
+Barista.iml
