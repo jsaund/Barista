@@ -28,7 +28,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -677,6 +676,48 @@ public class RadialProgressIndicator extends View {
     public void setTrackColor(int color) {
         this.trackColor = color;
         this.trackPaint.setColor(this.trackColor);
+    }
+
+    /**
+     * Set the color of the secondary track color. The track is always present and represents the background
+     * track for the primary and/or secondary indicator to sit on top of.
+     *
+     * @param secondaryTrackColor
+     */
+    public void setSecondaryTrackColor(int secondaryTrackColor) {
+        this.secondaryTrackColor = secondaryTrackColor;
+    }
+
+    /**
+     * Set the thickness of the track. The track is always present and represents the background
+     * track for the primary and/or secondary indicator to sit on top of.
+     *
+     * @param thickness
+     */
+    public void setThickness(int thickness) {
+        this.secondaryThickness = thickness;
+        this.trackPaint.setStrokeWidth(this.thickness);
+        this.indicatorPaint.setStrokeWidth(this.thickness);
+    }
+
+    /**
+     * Set the thickness of the secondary track. The track is always present and represents the background
+     * track for the primary and/or secondary indicator to sit on top of.
+     *
+     * @param secondaryThickness
+     */
+    public void setSecondaryThickness(int secondaryThickness) {
+        this.secondaryThickness = secondaryThickness;
+        this.secondaryIndicatorPaint.setStrokeWidth(this.secondaryThickness);
+        //FIXME(jsaund): Why is secondaryTrackPaint never used? Shouldn't it be analogous to trackPaint?
+    }
+
+    /**
+     * Set whether the radial indicator should smoothly animate or jump immediately to latest progress
+     * @param smoothAnimation
+     */
+    public void setSmoothAnimation(boolean smoothAnimation) {
+        this.smoothAnimation = smoothAnimation;
     }
 
     /**
