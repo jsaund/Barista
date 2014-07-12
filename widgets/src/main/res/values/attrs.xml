@@ -73,5 +73,7 @@
         <attr name="successDrawable" format="reference" />
         <!-- Use smooth animation for incremental progress updates -->
         <attr name="smoothAnimation" format="boolean" />
+        <!-- Change animation tick degrees to increase the speed of smoothAnimation -->
+        <attr name="animationTickDegrees" format="integer"/>
     </declare-styleable>
 </resources>
