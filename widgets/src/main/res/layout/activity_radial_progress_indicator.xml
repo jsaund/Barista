@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="#ff252525"
+    android:background="#FF252525"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -33,15 +33,15 @@
         android:id="@+id/radial_progress_indicator"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        demitasse:indicatorColor="#ffdcff4f"
+        demitasse:indicatorColor="#FFDCFF4F"
         demitasse:indicatorStyle="percentage"
         demitasse:max="1000"
         demitasse:progress="0"
-        demitasse:textColor="#ffe0e0e0"
+        demitasse:textColor="#FFE0E0E0"
         demitasse:trackColor="#40FFFFFF"
         demitasse:secondaryThickness="4dp"
-        demitasse:secondaryTrackColor="#40FFFFFF"
-        demitasse:secondaryIndicatorColor="#ffff5a00"
+        demitasse:secondaryTrackColor="#0FFFFFFF"
+        demitasse:secondaryIndicatorColor="#FFFF5A00"
         demitasse:smoothAnimation="true"/>
 
 </RelativeLayout>

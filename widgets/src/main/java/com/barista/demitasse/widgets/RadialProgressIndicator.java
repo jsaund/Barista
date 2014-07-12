@@ -439,6 +439,14 @@ public class RadialProgressIndicator extends View {
         trackPaint.setFilterBitmap(false);
         trackPaint.setColor(this.trackColor);
 
+        this.secondaryTrackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        secondaryTrackPaint.setStyle(Paint.Style.STROKE);
+        secondaryTrackPaint.setStrokeWidth(this.secondaryThickness);
+        secondaryTrackPaint.setStrokeCap(Paint.Cap.BUTT);
+        secondaryTrackPaint.setDither(true);
+        secondaryTrackPaint.setFilterBitmap(false);
+        secondaryTrackPaint.setColor(this.secondaryTrackColor);
+
         this.textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(textColor);
         textPaint.setTextAlign(Paint.Align.CENTER);
@@ -707,7 +715,7 @@ public class RadialProgressIndicator extends View {
      * @param thickness
      */
     public void setThickness(int thickness) {
-        this.secondaryThickness = thickness;
+        this.thickness = thickness;
         this.trackPaint.setStrokeWidth(this.thickness);
         this.indicatorPaint.setStrokeWidth(this.thickness);
     }
@@ -720,8 +728,8 @@ public class RadialProgressIndicator extends View {
      */
     public void setSecondaryThickness(int secondaryThickness) {
         this.secondaryThickness = secondaryThickness;
+        this.secondaryTrackPaint.setStrokeWidth(this.secondaryThickness);
         this.secondaryIndicatorPaint.setStrokeWidth(this.secondaryThickness);
-        //FIXME(jsaund): Why is secondaryTrackPaint never used? Shouldn't it be analogous to trackPaint?
     }
 
     /**
@@ -1077,6 +1085,7 @@ public class RadialProgressIndicator extends View {
         }
 
         drawIndicatorTrack(canvas);
+        drawSecondaryTrack(canvas);
         drawSecondaryIndicator(canvas);
         drawPrimaryIndicator(canvas);
 
@@ -1085,6 +1094,10 @@ public class RadialProgressIndicator extends View {
 
     private void drawIndicatorTrack(Canvas canvas) {
         canvas.drawCircle(centerX, centerY, bounds.width() / 2.0f, trackPaint);
+    }
+
+    private void drawSecondaryTrack(Canvas canvas) {
+        canvas.drawCircle(centerX, centerY, secondaryProgressBounds.width() / 2.0f, secondaryTrackPaint);
     }
 
     private void drawProgressText(Canvas canvas) {
