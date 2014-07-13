@@ -124,6 +124,13 @@ public class RadialProgressIndicator extends View {
     private static final int DEFAULT_ANIMATION_TICK_DEGREES = 1;
 
     /**
+     * Indicates if the view is attached to the window.
+     * If the view is not attached we need to ensure we are not performing any animations until
+     * the view is reattached to the window.
+     */
+    private boolean isAttached = true;
+
+    /**
      * The progress indicator style can be one of:<br/>
      * {@link #INDICATOR_STYLE_TIMER}<br/>
      * {@link #INDICATOR_STYLE_PERCENTAGE}<br/>
@@ -295,8 +302,10 @@ public class RadialProgressIndicator extends View {
     private final Handler animationHandler = new Handler();
 
     /**
+     * Defines the tick rate per frame.</br>
+     * We assume a refresh rate of 60 fps (1/60s = 20ms per frame).</br>
      * Increasing the animationTickDegrees will make the maximum speed
-     * of the smoothAnimation faster
+     * of the smoothAnimation faster.
      */
     private int animationTickDegrees = DEFAULT_ANIMATION_TICK_DEGREES;
 
@@ -312,12 +321,15 @@ public class RadialProgressIndicator extends View {
 
             // If the target angle has not been reached then schedule this tick to be dispatched
             // at 60fps.
-            if (isIndicatorStyleTimer() && sweepAngle < 360.0f) {
+            if (isIndicatorStyleTimer() && sweepAngle < 360.0f && isAttached) {
                 animationHandler.postDelayed(this, 20);
             } else if (currentSweepAngle < sweepAngle) {
                 currentSweepAngle += animationTickDegrees;
                 currentSweepAngle = Math.min(currentSweepAngle, sweepAngle);
-                animationHandler.postDelayed(this, 20);
+
+                if (isAttached) {
+                    animationHandler.postDelayed(this, 20);
+                }
             }
         }
     };
@@ -337,7 +349,10 @@ public class RadialProgressIndicator extends View {
             if (currentSecondarySweepAngle < secondarySweepAngle) {
                 currentSecondarySweepAngle += animationTickDegrees;
                 currentSecondarySweepAngle = Math.min(currentSecondarySweepAngle, secondarySweepAngle);
-                animationHandler.postDelayed(this, 20);
+
+                if (isAttached) {
+                    animationHandler.postDelayed(this, 20);
+                }
             }
         }
     };
@@ -1030,11 +1045,18 @@ public class RadialProgressIndicator extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+        isAttached = true;
     }
 
     @Override
     protected void onDetachedFromWindow() {
+        // Remove all callbacks
+        animationHandler.removeCallbacks(primaryIndicatorTick);
+        animationHandler.removeCallbacks(secondaryIndicatorTick);
+
         super.onDetachedFromWindow();
+        isAttached = false;
     }
 
     @Override
@@ -1136,14 +1158,14 @@ public class RadialProgressIndicator extends View {
             canvas.drawArc(bounds, 0, currentSweepAngle, false, indicatorPaint);
             animationHandler.removeCallbacks(primaryIndicatorTick);
 
-            if (currentSweepAngle < sweepAngle) {
+            if (currentSweepAngle < sweepAngle && isAttached) {
                 animationHandler.post(primaryIndicatorTick);
             }
         } else {
             canvas.drawArc(bounds, 0, sweepAngle, false, indicatorPaint);
         }
 
-        if (isIndicatorStyleTimer() && timerStarted) {
+        if (isIndicatorStyleTimer() && timerStarted && isAttached) {
             animationHandler.removeCallbacks(primaryIndicatorTick);
             animationHandler.post(primaryIndicatorTick);
         }
@@ -1162,7 +1184,7 @@ public class RadialProgressIndicator extends View {
             canvas.drawArc(secondaryProgressBounds, 0, currentSecondarySweepAngle, false, secondaryIndicatorPaint);
             animationHandler.removeCallbacks(secondaryIndicatorTick);
 
-            if (currentSecondarySweepAngle < secondarySweepAngle) {
+            if (currentSecondarySweepAngle < secondarySweepAngle && isAttached) {
                 animationHandler.post(secondaryIndicatorTick);
             }
         } else {
