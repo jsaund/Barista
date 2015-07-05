@@ -1,7 +1,7 @@
 Barista
 =======
 
-Barista is a suite of Android widgets. The suit currenlty comprises of:
+Barista is a suite of Android widgets. The suite is currenlty comprised of:
 * Audio Visualizer
 * Radial Progress Bar Indicator
 
