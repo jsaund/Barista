@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
-* Copyright (C) 2014 [Jag Saund]
+* Copyright (C) 2015 [Jag Saund]
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,13 +13,23 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
--->
-<resources>
 
-    <string name="app_name">Demitasse</string>
-    <string name="title_activity_radial_progress_indicator">Mocha</string>
-    <string name="action_settings">Settings</string>
+package com.barista.demitasse.widgets;
 
-    <string name="analyzer_toggle_show_modern">Show Modern Visualizer</string>
-    <string name="analyzer_toggle_show_classic">Show Classic Visualizer</string>
-</resources>
+/**
+ * A view which provides capabilities to render the audio visualization
+ * must implement the Render interface.
+ */
+public interface Render {
+    /**
+     * Set the current amplitude of the captured frequency.
+     * @param amplitude
+     */
+    public void setAmplitude(int amplitude);
+
+    /**
+     * Returns the current amplitude for the represented frequency.
+     * @return
+     */
+    public int getAmplitude();
+}

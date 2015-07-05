@@ -23,7 +23,15 @@
     <dimen name="radial_indicator_primary_track_thickness">8dp</dimen>
     <dimen name="radial_indicator_secondary_track_thickness">2dp</dimen>
     <dimen name="radial_indicator_text_size">16sp</dimen>
+
+    <dimen name="bar_render_peak_bar_height">2dp</dimen>
+    <dimen name="bar_render_peak_bar_space">2dp</dimen>
+    <dimen name="bar_render_width">5dp</dimen>
+    <dimen name="bar_render_height">100dp</dimen>
+
+    <dimen name="rounded_bar_render_width">4dp</dimen>
+    <dimen name="rounded_bar_render_height">100dp</dimen>
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
 </resources>

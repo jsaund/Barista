@@ -40,7 +40,7 @@
              and 360 degrees. -->
         <attr name="secondaryIndicatorColor" format="reference|color" />
         <!-- Defines the thickness of the track and indicator to be drawn. -->
-        <attr name="thickness" format="dimension" />
+        <attr name="primaryThickness" format="dimension" />
         <!-- Defines the secondary progress thickness of the track and indicator to be drawn. -->
         <attr name="secondaryThickness" format="dimension" />
         <!-- Defines the type of indicator to draw. -->
@@ -75,5 +75,21 @@
         <attr name="smoothAnimation" format="boolean" />
         <!-- Change animation tick degrees to increase the speed of smoothAnimation -->
         <attr name="animationTickDegrees" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="Render">
+        <!-- Defines the primary color used to visualize the frequency -->
+        <attr name="primaryColor" format="reference|color" />
+        <!-- Defines an optional secondary or alternate color used to visualize the frequency -->
+        <attr name="secondaryColor" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="Render.BarRender">
+        <!-- Defines the height of the peak bar -->
+        <attr name="peakBarHeight" format="dimension" />
+        <!-- Defines the space between the top of the bar and the bottom of the peak bar -->
+        <attr name="peakBarSpace" format="dimension" />
+        <!-- Display the peak bar -->
+        <attr name="showPeakBar" format="boolean" />
     </declare-styleable>
 </resources>

@@ -18,4 +18,11 @@
 -->
 <resources>
     <color name="radial_indicator_track">#20FFFFFF</color>
+    <color name="analyzer_primary_color">#FFFF2055</color>
+    <color name="analyzer_secondary_color">#FFFFACC5</color>
+
+    <color name="primary">#E91E63</color>
+    <color name="primary_dark">#C2185B</color>
+    <color name="accent_primary">#FF72B506</color>
+    <color name="accent_primary_dark">#FF809F46</color>
 </resources>

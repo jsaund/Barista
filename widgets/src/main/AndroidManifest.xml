@@ -19,13 +19,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.barista.demitasse.widgets" >
 
+    <!-- Required to stream audio over the network and produce audio visualization -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required to record current audio stream, capture samples, perform an FFT, and pass along to visualizer -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.barista.demitasse.examples.RadialProgressIndicatorActivity"
+            android:name="com.barista.demitasse.examples.AudioVisualizerActivity"
             android:label="@string/title_activity_radial_progress_indicator" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

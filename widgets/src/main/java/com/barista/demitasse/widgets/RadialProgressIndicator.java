@@ -397,7 +397,7 @@ public class RadialProgressIndicator extends View {
 
         final int defaultThickness = resources.getDimensionPixelSize(R.dimen.radial_indicator_primary_track_thickness);
         final int secondaryDefaultThickness = resources.getDimensionPixelSize(R.dimen.radial_indicator_secondary_track_thickness);
-        this.thickness = a.getDimensionPixelSize(R.styleable.RadialProgressIndicator_thickness, defaultThickness);
+        this.thickness = a.getDimensionPixelSize(R.styleable.RadialProgressIndicator_primaryThickness, defaultThickness);
         this.secondaryThickness = a.getDimensionPixelSize(R.styleable.RadialProgressIndicator_secondaryThickness, secondaryDefaultThickness);
 
         final int defaultTextSize = resources.getDimensionPixelSize(R.dimen.radial_indicator_text_size);
