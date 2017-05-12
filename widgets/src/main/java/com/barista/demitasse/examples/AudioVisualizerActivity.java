@@ -24,10 +24,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.barista.demitasse.widgets.AudioVisualizer;
 import com.barista.demitasse.widgets.R;
-
 import java.io.IOException;
 
 /**
@@ -52,6 +50,7 @@ public class AudioVisualizerActivity extends AppCompatActivity {
         @Override
         public void onPrepared(MediaPlayer mp) {
             mp.start();
+            v.activeAnalyzer.setAudioSessionID(mp.getAudioSessionId());
             v.activeAnalyzer.start();
         }
     }
@@ -118,6 +117,7 @@ public class AudioVisualizerActivity extends AppCompatActivity {
                     classicAnalyzer.setVisibility(View.GONE);
 
                     modernAnalyzer.setVisibility(View.VISIBLE);
+                    modernAnalyzer.setAudioSessionID(player.getAudioSessionId());
                     modernAnalyzer.start();
 
                     toggleAnalyzer.setText(R.string.analyzer_toggle_show_classic);
@@ -128,6 +128,7 @@ public class AudioVisualizerActivity extends AppCompatActivity {
                     modernAnalyzer.setVisibility(View.GONE);
 
                     classicAnalyzer.setVisibility(View.VISIBLE);
+                    classicAnalyzer.setAudioSessionID(player.getAudioSessionId());
                     classicAnalyzer.start();
 
                     toggleAnalyzer.setText(R.string.analyzer_toggle_show_modern);
@@ -168,5 +169,17 @@ public class AudioVisualizerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         activeAnalyzerHolder.activeAnalyzer.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player != null) {
+            try {
+                player.stop();
+                player.release();
+            } catch (Exception ignore) {
+            }
+        }
     }
 }

@@ -24,4 +24,6 @@
 
     <string name="analyzer_toggle_show_modern">Show Modern Visualizer</string>
     <string name="analyzer_toggle_show_classic">Show Classic Visualizer</string>
+    <string name="audio_visualizer">Audio Visualizer</string>
+    <string name="progress_indicator">Radial Progress Indicator</string>
 </resources>
